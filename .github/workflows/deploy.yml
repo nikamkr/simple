@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: 🚀 Auto Deploy to EC2 on Push
 
 on:
   push:
@@ -7,12 +7,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: EC2_HOST  # 🔥 Add this line to connect to your environment
 
     steps:
-    - name: Checkout Code
+    - name: ✅ Checkout code
       uses: actions/checkout@v3
 
-    - name: Deploy to EC2 via SSH
+    - name: 🔐 Deploy via SSH to EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -20,8 +21,11 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd ~/simple
+          git reset --hard
+          git clean -fd
           git pull origin main
-          docker stop $(docker ps -q) || true
-          docker rm $(docker ps -a -q) || true
-          docker build -t simple .
+          docker stop $(docker ps -aq) || true
+          docker rm $(docker ps -aq) || true
+          docker rmi -f simple || true
+          docker build --no-cache -t simple .
           docker run -d -p 3000:3000 simple
