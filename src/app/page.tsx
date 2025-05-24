@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <div className="todo-container">
       <div className="todo-box">
-        <h1 className="todo-title">Todo List New App</h1>
+        <h1 className="todo-title">Todo List New App One Test</h1>
         <form onSubmit={editing ? updateTodo : addTodo} className="flex gap-2 mb-6">
           <input
             className="todo-input"
